@@ -10,6 +10,7 @@ compile_commands.json
 CTestTestfile.cmake
 _deps
 CMakeUserPresets.json
-server
+boost_1_86_0.tar.gz
 boost
 build
+bin

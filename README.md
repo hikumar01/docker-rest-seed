@@ -1,9 +1,10 @@
 # Rest Server Seed
-This project is a simple C++ project in docker image. This has added boost support.
+This project is a simple HTTP server seed built using Boost.Beast and Boost.Asio libraries. It demonstrates handling HTTP requests and responses in a modern C++ environment.
 
 ## Prerequisites
 - C++17 compatible compiler
-- CMake 3.28 or higher
+- CMake `3.28` or higher
+- wget
 - Docker (optional, for containerized deployment)
 
 ## Building the Project
@@ -25,6 +26,25 @@ Run [build.sh](./build.sh)
     docker run -p 8080:80 rest_seed
     ```
 
+## Testing the Server
+Once the container is running, you can test it by sending a request:
+```bash
+curl http://localhost:8080
+```
+
+Expected response:
+```json
+{
+    "message": "Welcome to the REST API",
+    "status": "success"
+}
+```
+
+### Quick - Testing the Server
+```bash
+echo -n "\n\nGET http://localhost:8080:\n" && curl http://localhost:8080; echo -n "\n\nGET http://localhost:8080/status:\n" && curl http://localhost:8080/status; echo -n "\n\nGET http://localhost:8080/error:\n" && curl http://localhost:8080/error; echo -n "\n\nPOST http://localhost:8080:\n" && curl -X POST http://localhost:8080
+```
+
 ## Docker commands
 * Stop Docker commands
     ```sh
@@ -32,9 +52,34 @@ Run [build.sh](./build.sh)
     docker stop <docker_id>
     ```
 
-## Boost
-Download Boost version `1.86.0` from [Boost's official site](https://www.boost.org/users/history/version_1_86_0.html) and place the file (`boost_1_86_0.tar.gz`) in the root directory of the repository. Update the [build.sh](./build.sh) script and the [Dockerfile](./Dockerfile) to reflect this change.
+## Boost Library
+Boost version [1.86.0](https://archives.boost.io/release/1.86.0/source/boost_1_86_0.tar.gz) is downloaded from [Boost's official site](https://www.boost.org).
 
-### Boost linking directory
+### Linking Directory
 - Compiler include paths: `<boost path>/boost_1_86_0`.
 - Linker library paths: `<boost path>/boost_1_86_0/stage/lib`.
+
+## Using the docker image
+### Create a custom local docker iamge
+To build or identify the Docker image, use the following command:
+```bash
+docker build -t cpp_rest_server:latest .
+```
+### Export the Image
+To export the image, use the following command:
+```bash
+docker save -o cpp_rest_server.tar cpp_rest_server:latest
+```
+
+### Transfer or Copy the Exported Image
+After creating the tar file (cpp_rest_server.tar), you can transfer it to another machine via USB drive or network transfer (like scp, rsync)
+
+### Consume a custom local docker iamge
+To import the Docker image on another machine, use the following command:
+```bash
+docker load -i cpp_rest_server.tar
+```
+To verify that the image is loaded, use the following command:
+```bash
+docker images
+```
