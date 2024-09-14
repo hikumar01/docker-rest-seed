@@ -1,15 +1,20 @@
 #!/bin/bash
 set -o verbose #echo on
 
-rm -rf build bin
-mkdir build
+rm -rf boost build
+mkdir boost build
 
-cd build
-cmake -DCMAKE_BUILD_TYPE=Debug ..
+tar -xzf boost_1_86_0.tar.gz -C boost
+cd boost/boost_1_86_0
+./bootstrap.sh
+./b2 link=static --with-system --with-json
+
+cd ../../build
+cmake -DBOOST_ROOT=../boost/boost_1_86_0/stage -DCMAKE_BUILD_TYPE=Debug ..
 cmake --build . --verbose
 
 cd ..
-rm -rf build
+rm -rf boost build
 
 ./server
 
