@@ -8,7 +8,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(Boost_USE_STATIC_LIBS ON)
 find_package(Boost 1.86 CONFIG REQUIRED COMPONENTS system json)
 
-add_executable(rest_api src/server.cpp src/main.cpp)
+add_executable(rest_api src/RestController.cpp src/main.cpp)
 
 target_include_directories(rest_api PRIVATE include ${Boost_INCLUDE_DIRS})
 target_link_libraries(rest_api PRIVATE ${Boost_LIBRARIES})

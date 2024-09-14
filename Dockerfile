@@ -31,6 +31,6 @@ RUN cmake --build . --verbose
 WORKDIR ${APP_DIR}
 RUN rm -rf boost build boost_1_86_0.tar.gz src include CMakeLists.txt
 
-# Running the server
+# Starting App
 EXPOSE 80
 CMD ["./rest_api"]

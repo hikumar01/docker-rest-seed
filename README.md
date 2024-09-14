@@ -1,5 +1,5 @@
-# Rest Server Seed
-This project is a simple HTTP server seed built using Boost.Beast and Boost.Asio libraries. It demonstrates handling HTTP requests and responses in a modern C++ environment.
+# Rest API
+This project is a simple HTTP program built using Boost.Beast and Boost.Asio libraries. It demonstrates handling HTTP requests and responses in a modern C++ environment.
 
 ## Prerequisites
 - C++17 compatible compiler
@@ -9,7 +9,7 @@ This project is a simple HTTP server seed built using Boost.Beast and Boost.Asio
 
 ## Building the Project
 ### Using CMake
-Run [build.sh](./build.sh)
+Run [setup.sh](./setup.sh)
 
 ### Using Docker
 1. Build the Docker image:
@@ -26,7 +26,7 @@ Run [build.sh](./build.sh)
     docker run -p 8080:80 rest_api
     ```
 
-## Testing the Server
+## Testing the API's
 Once the container is running, you can test it by sending a request:
 ```bash
 curl http://localhost:8080
@@ -40,7 +40,7 @@ Expected response:
 }
 ```
 
-### Quick - Testing the Server
+### Quick - Testing the API's
 ```bash
 echo -n "\n\nGET http://localhost:8080:\n" && curl http://localhost:8080; echo -n "\n\nGET http://localhost:8080/status:\n" && curl http://localhost:8080/status; echo -n "\n\nGET http://localhost:8080/error:\n" && curl http://localhost:8080/error; echo -n "\n\nPOST http://localhost:8080:\n" && curl -X POST http://localhost:8080
 ```
