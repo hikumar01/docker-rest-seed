@@ -1,18 +1,17 @@
 cmake_minimum_required(VERSION 3.28)
 
-project(rest_seed VERSION 1.0)
+project(rest_api VERSION 1.0)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 set(Boost_USE_STATIC_LIBS ON)
 find_package(Boost 1.86 CONFIG REQUIRED COMPONENTS system json)
-add_definitions(-DBOOST_ALL_NO_LIB)
-add_definitions(-DBOOST_ALL_STATIC_LINK)
 
-add_executable(server src/server.cpp)
+add_executable(rest_api src/server.cpp src/main.cpp)
 
-target_include_directories(server PRIVATE ${Boost_INCLUDE_DIRS})
-target_link_libraries(server PRIVATE ${Boost_LIBRARIES})
+target_include_directories(rest_api PRIVATE include ${Boost_INCLUDE_DIRS})
+target_link_libraries(rest_api PRIVATE ${Boost_LIBRARIES})
 
-set_target_properties(server PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
+target_compile_definitions(rest_api PRIVATE BOOST_ALL_NO_LIB BOOST_ALL_STATIC_LINK)
+set_target_properties(rest_api PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR})

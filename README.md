@@ -15,15 +15,15 @@ Run [build.sh](./build.sh)
 1. Build the Docker image:
     - With Cache:
         ```sh
-        docker build -t rest_seed .
+        docker build -t rest_api .
         ```
     - Without Cache:
         ```sh
-        docker build --no-cache -t rest_seed .
+        docker build --no-cache -t rest_api .
         ```
 2. Run the Docker container:
     ```sh
-    docker run -p 8080:80 rest_seed
+    docker run -p 8080:80 rest_api
     ```
 
 ## Testing the Server
@@ -63,21 +63,21 @@ Boost version [1.86.0](https://archives.boost.io/release/1.86.0/source/boost_1_8
 ### Create a custom local docker iamge
 To build or identify the Docker image, use the following command:
 ```bash
-docker build -t cpp_rest_server:latest .
+docker build -t cpp_rest_api:latest .
 ```
 ### Export the Image
 To export the image, use the following command:
 ```bash
-docker save -o cpp_rest_server.tar cpp_rest_server:latest
+docker save -o cpp_rest_api.tar cpp_rest_api:latest
 ```
 
 ### Transfer or Copy the Exported Image
-After creating the tar file (cpp_rest_server.tar), you can transfer it to another machine via USB drive or network transfer (like scp, rsync)
+After creating the tar file (cpp_rest_api.tar), you can transfer it to another machine via USB drive or network transfer (like scp, rsync)
 
 ### Consume a custom local docker iamge
 To import the Docker image on another machine, use the following command:
 ```bash
-docker load -i cpp_rest_server.tar
+docker load -i cpp_rest_api.tar
 ```
 To verify that the image is loaded, use the following command:
 ```bash

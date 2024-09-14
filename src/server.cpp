@@ -1,3 +1,6 @@
+#include "Server.h"
+#include "Session.h"
+
 #include <boost/beast/core.hpp>
 #include <boost/beast/http.hpp>
 #include <boost/asio.hpp>
@@ -51,110 +54,92 @@ void handle_request(const http::request<http::string_body>& req, http::response<
     res.prepare_payload();
 }
 
-class session : public std::enable_shared_from_this<session> {
-public:
-    session(tcp::socket socket) : socket_(std::move(socket)) {}
+Session::Session(tcp::socket socket) : socket_(std::move(socket)) {}
 
-    void run() {
-        read_request();
+void Session::run() {
+    read_request();
+}
+
+void Session::read_request() {
+    auto self = shared_from_this();
+    http::async_read(socket_, buffer_, req_,
+        [self](beast::error_code ec, std::size_t bytes_transferred) {
+            if (!ec) {
+                self->process_request();
+            } else {
+                std::cerr << "Read error: " << ec.message() << std::endl;
+            }
+        });
+}
+
+void Session::process_request() {
+    handle_request(req_, res_);
+    write_response();
+}
+
+void Session::write_response() {
+    auto self = shared_from_this();
+    http::async_write(socket_, res_,
+        [self](beast::error_code ec, std::size_t bytes_transferred) {
+            if (ec) {
+                std::cerr << "Write error: " << ec.message() << std::endl;
+            }
+            beast::error_code shutdown_ec;
+            self->socket_.shutdown(tcp::socket::shutdown_send, shutdown_ec);
+            if (shutdown_ec) {
+                std::cerr << "Shutdown error: " << shutdown_ec.message() << std::endl;
+            }
+        });
+}
+
+Server::Server(net::io_context& ioc, tcp::endpoint endpoint) : acceptor_(ioc) {
+    boost::system::error_code ec;
+    acceptor_.open(endpoint.protocol(), ec);
+    if (ec) {
+        std::cerr << "Open error: " << ec.message() << std::endl;
+        return;
     }
-
-private:
-    tcp::socket socket_;
-    beast::flat_buffer buffer_;
-    http::request<http::string_body> req_;
-    http::response<http::string_body> res_;
-
-    void read_request() {
-        auto self = shared_from_this();
-        http::async_read(socket_, buffer_, req_,
-            [self](beast::error_code ec, std::size_t bytes_transferred) {
-                if (!ec) {
-                    self->process_request();
-                } else {
-                    std::cerr << "Read error: " << ec.message() << std::endl;
-                }
-            });
+    acceptor_.set_option(net::socket_base::reuse_address(true), ec);
+    if (ec) {
+        std::cerr << "Set option error: " << ec.message() << std::endl;
+        return;
     }
-
-    void process_request() {
-        handle_request(req_, res_);
-        write_response();
+    acceptor_.bind(endpoint, ec);
+    if (ec) {
+        std::cerr << "Bind error: " << ec.message() << std::endl;
+        return;
     }
-
-    void write_response() {
-        auto self = shared_from_this();
-        http::async_write(socket_, res_,
-            [self](beast::error_code ec, std::size_t bytes_transferred) {
-                if (ec) {
-                    std::cerr << "Write error: " << ec.message() << std::endl;
-                }
-                beast::error_code shutdown_ec;
-                self->socket_.shutdown(tcp::socket::shutdown_send, shutdown_ec);
-                if (shutdown_ec) {
-                    std::cerr << "Shutdown error: " << shutdown_ec.message() << std::endl;
-                }
-            });
+    acceptor_.listen(net::socket_base::max_listen_connections, ec);
+    if (ec) {
+        std::cerr << "Listen error: " << ec.message() << std::endl;
+        return;
     }
-};
+    do_accept();
+}
 
-class server {
-public:
-    server(net::io_context& ioc, tcp::endpoint endpoint) : acceptor_(ioc) {
-        boost::system::error_code ec;
-        acceptor_.open(endpoint.protocol(), ec);
-        if (ec) {
-            std::cerr << "Open error: " << ec.message() << std::endl;
-            return;
-        }
-        acceptor_.set_option(net::socket_base::reuse_address(true), ec);
-        if (ec) {
-            std::cerr << "Set option error: " << ec.message() << std::endl;
-            return;
-        }
-        acceptor_.bind(endpoint, ec);
-        if (ec) {
-            std::cerr << "Bind error: " << ec.message() << std::endl;
-            return;
-        }
-        acceptor_.listen(net::socket_base::max_listen_connections, ec);
-        if (ec) {
-            std::cerr << "Listen error: " << ec.message() << std::endl;
-            return;
-        }
-        do_accept();
-    }
+void Server::do_accept() {
+    acceptor_.async_accept(
+        [this](beast::error_code ec, tcp::socket socket) {
+            if (ec) {
+                std::cerr << "Accept error: " << ec.message() << std::endl;
+                do_accept(); // Retry accepting
+            } else {
+                std::make_shared<Session>(std::move(socket))->run();
+                do_accept(); // Continue accepting new connections
+            }
+        });
+}
 
-private:
-    tcp::acceptor acceptor_;
-
-    void do_accept() {
-        acceptor_.async_accept(
-            [this](beast::error_code ec, tcp::socket socket) {
-                if (ec) {
-                    std::cerr << "Accept error: " << ec.message() << std::endl;
-                    do_accept(); // Retry accepting
-                } else {
-                    std::make_shared<session>(std::move(socket))->run();
-                    do_accept(); // Continue accepting new connections
-                }
-            });
-    }
-};
-
-int main() {
+void start_server(const int& port, const int& num_threads) {
     try {
-        const int port = 8080;
-        net::io_context ioc{1};
+        net::io_context ioc{num_threads};
         tcp::endpoint endpoint{tcp::v4(), static_cast<unsigned short>(port)};
 
-        auto srv = std::make_shared<server>(ioc, endpoint);
-
-        std::cout << "Server running on http://localhost:" << port << std::endl;
+        auto srv = std::make_shared<Server>(ioc, endpoint);
 
         ioc.run();
     } catch (const std::exception& e) {
         std::cerr << "Exception: " << e.what() << std::endl;
-        return EXIT_FAILURE;
+        throw;
     }
 }

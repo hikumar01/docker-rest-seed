@@ -19,6 +19,7 @@ RUN ./b2 link=static --with-system --with-json
 WORKDIR ${APP_DIR}
 COPY CMakeLists.txt .
 COPY src/ src/
+COPY include/ include/
 
 # Compiling the project
 WORKDIR ${APP_DIR}/build
@@ -28,8 +29,8 @@ RUN cmake --build . --verbose
 
 # Clean up
 WORKDIR ${APP_DIR}
-RUN rm -rf boost build boost_1_86_0.tar.gz src CMakeLists.txt
+RUN rm -rf boost build boost_1_86_0.tar.gz src include CMakeLists.txt
 
 # Running the server
 EXPOSE 80
-CMD ["./bin/server"]
+CMD ["./rest_api"]
