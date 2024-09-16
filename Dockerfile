@@ -18,8 +18,8 @@ RUN ./b2 link=static --with-system --with-json install --prefix=/usr/local
 # Setting up the project
 WORKDIR ${APP_DIR}
 COPY CMakeLists.txt .
-COPY src/ src/
 COPY include/ include/
+COPY src/ src/
 
 # Compiling the project
 WORKDIR ${APP_DIR}/build
@@ -32,5 +32,6 @@ WORKDIR ${APP_DIR}
 RUN rm -rf boost build boost_1_86_0.tar.gz src include CMakeLists.txt
 
 # Starting App
+# The port should be the same as the one in the code
 EXPOSE 80
 CMD ["./rest_api"]
