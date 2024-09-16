@@ -42,14 +42,25 @@ Expected response:
 
 ### Quick - Testing the API's
 ```bash
+docker build -t rest_api . && docker run -p 8080:80 -d rest_api
 echo -n "\n\nGET http://localhost:8080:\n" && curl http://localhost:8080; echo -n "\n\nGET http://localhost:8080/status:\n" && curl http://localhost:8080/status; echo -n "\n\nGET http://localhost:8080/error:\n" && curl http://localhost:8080/error; echo -n "\n\nPOST http://localhost:8080:\n" && curl -X POST http://localhost:8080
 ```
 
 ## Docker commands
-* Stop Docker commands
+* Stop Docker commands using docker name
+    ```sh
+    docker stop <docker_name>
+    ```
+* Stop & Delete Docker commands using docker id
     ```sh
     docker ps
     docker stop <docker_id>
+    docker rm <docker_id>
+    ```
+* Stop & Delete all dockers
+    ```sh
+    docker stop $(docker ps -q)
+    docker rm $(docker ps -aq)
     ```
 
 ## Boost Library
@@ -82,4 +93,10 @@ docker load -i cpp_rest_api.tar
 To verify that the image is loaded, use the following command:
 ```bash
 docker images
+```
+
+## Benchmarking
+To benchmark the application, you can use ApacheBench with the following command:
+```bash
+ab -n 300 -c 30 http://127.0.0.1:8080/
 ```
