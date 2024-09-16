@@ -9,7 +9,7 @@ This project is a simple HTTP program built using Boost.Beast and Boost.Asio lib
 
 ## Building the Project
 ### Using CMake
-Run [setup.sh](./setup.sh)
+Run the [setup.sh](./setup.sh) script.
 
 ### Using Docker
 1. Build the Docker image:
@@ -23,7 +23,7 @@ Run [setup.sh](./setup.sh)
         ```
 2. Run the Docker container:
     ```sh
-    docker run -p 8080:80 rest_api
+    docker run -p 8080:80 -d rest_api
     ```
 
 ## Testing the API's
@@ -42,23 +42,49 @@ Expected response:
 
 ### Quick - Testing the API's
 ```bash
-docker build -t rest_api . && docker run -p 8080:80 rest_api
-echo -n "\n\nGET http://localhost:8080:\n" && curl http://localhost:8080; echo -n "\n\nGET http://localhost:8080/status:\n" && curl http://localhost:8080/status; echo -n "\n\nGET http://localhost:8080/error:\n" && curl http://localhost:8080/error; echo -n "\n\nPOST http://localhost:8080:\n" && curl -X POST http://localhost:8080
-ab -n 300 -c 30 http://127.0.0.1:8080/
+docker build -t rest_api . && docker run -p 8080:80 -d rest_api;
+echo -n "\n\nGET http://localhost:8080:\n" && curl http://localhost:8080;
+echo -n "\n\nGET http://localhost:8080/status:\n" && curl http://localhost:8080/status;
+echo -n "\n\nGET http://localhost:8080/error:\n" && curl http://localhost:8080/error;
+echo -n "\n\nPOST http://localhost:8080:\n" && curl -X POST http://localhost:8080
 ```
 
 ## Docker commands
-* Stop Docker commands using docker name
+* Running a container from an image in attached mode:
     ```sh
-    docker stop <docker_name>
+    docker run -p 8080:80 <image_name>
     ```
-* Stop & Delete Docker commands using docker id
+* Running a container from an image in detached mode:
     ```sh
-    docker ps
-    docker stop <docker_id>
-    docker rm <docker_id>
+    docker run -p 8080:80 -d <image_name>
     ```
-* Stop & Delete all dockers
+* Attaching a terminal to a detached container:
+    ```sh
+    docker attach <container_id_or_name>
+    ```
+    To exit the attached session, press `Ctrl + P`, followed by `Ctrl + Q`.
+    Avoid pressing `Ctrl + C`, as it will inadvertently stop the container itself.
+* Executing a command in a container without attaching:
+    ```sh
+    docker exec -it <container_id_or_name> /bin/sh
+    ```
+* Listing all containers:
+    ```sh
+    docker ps -a
+    ```
+* Starting a container:
+    ```sh
+    docker start <container_id_or_name>
+    ```
+* Stopping a container:
+    ```sh
+    docker stop <container_id_or_name>
+    ```
+* Deleting a container:
+    ```sh
+    docker rm <container_id_or_name>
+    ```
+* Stopping and deleting all containers:
     ```sh
     docker stop $(docker ps -q)
     docker rm $(docker ps -aq)
@@ -72,21 +98,21 @@ Boost version [1.86.0](https://archives.boost.io/release/1.86.0/source/boost_1_8
 - Linker library paths: `<boost path>/boost_1_86_0/stage/lib`.
 
 ## Using the docker image
-### Create a custom local docker iamge
+### Create a custom local docker image
 To build or identify the Docker image, use the following command:
 ```bash
 docker build -t cpp_rest_api:latest .
 ```
-### Export the Image
+### Export the image
 To export the image, use the following command:
 ```bash
 docker save -o cpp_rest_api.tar cpp_rest_api:latest
 ```
 
-### Transfer or Copy the Exported Image
+### Transfer or Copy the Exported image
 After creating the tar file (cpp_rest_api.tar), you can transfer it to another machine via USB drive or network transfer (like scp, rsync)
 
-### Consume a custom local docker iamge
+### Consume a custom local docker image
 To import the Docker image on another machine, use the following command:
 ```bash
 docker load -i cpp_rest_api.tar
