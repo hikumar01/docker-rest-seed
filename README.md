@@ -42,8 +42,9 @@ Expected response:
 
 ### Quick - Testing the API's
 ```bash
-docker build -t rest_api . && docker run -p 8080:80 -d rest_api
+docker build -t rest_api . && docker run -p 8080:80 rest_api
 echo -n "\n\nGET http://localhost:8080:\n" && curl http://localhost:8080; echo -n "\n\nGET http://localhost:8080/status:\n" && curl http://localhost:8080/status; echo -n "\n\nGET http://localhost:8080/error:\n" && curl http://localhost:8080/error; echo -n "\n\nPOST http://localhost:8080:\n" && curl -X POST http://localhost:8080
+ab -n 300 -c 30 http://127.0.0.1:8080/
 ```
 
 ## Docker commands

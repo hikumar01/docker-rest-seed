@@ -1,4 +1,4 @@
-#include "RestController.h"
+#include "rest/RestController.h"
 #include <iostream>
 
 int main() {

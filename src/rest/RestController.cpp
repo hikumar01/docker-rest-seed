@@ -1,5 +1,5 @@
-#include "Server.h"
-#include "Session.h"
+#include "rest/Server.h"
+#include "rest/Session.h"
 #include <boost/asio.hpp>
 #include <iostream>
 

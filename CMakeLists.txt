@@ -11,9 +11,9 @@ find_package(Boost 1.86 CONFIG REQUIRED COMPONENTS system json)
 add_executable(rest_api)
 
 target_sources(rest_api PRIVATE
-    src/Server.cpp
-    src/Session.cpp
-    src/RestController.cpp
+    src/rest/Server.cpp
+    src/rest/Session.cpp
+    src/rest/RestController.cpp
     src/main.cpp)
 
 target_include_directories(rest_api PRIVATE
