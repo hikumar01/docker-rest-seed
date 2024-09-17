@@ -1,7 +1,8 @@
 #!/bin/bash
 set -o verbose # echo on
 
-rm -rf build bin
+killall rest_api
+rm -rf build bin rest_api
 mkdir boost build
 
 if [ ! -d boost/boost_1_86_0 ]; then
@@ -17,10 +18,11 @@ if [ ! -d boost/boost_1_86_0 ]; then
 fi
 
 cd build
+# cmake -DBOOST_ROOT=../boost/boost_1_86_0/stage -G Xcode ..
 cmake -DBOOST_ROOT=../boost/boost_1_86_0/stage -DCMAKE_BUILD_TYPE=Debug ..
 cmake --build . --verbose
 
 cd ..
-./rest_api
+./rest_api&
 
 set +o verbose # echo off

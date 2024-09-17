@@ -1,6 +1,23 @@
 # Rest API
 This project is a simple HTTP program built using Boost.Beast and Boost.Asio libraries. It demonstrates handling HTTP requests and responses in a modern C++ environment.
 
+## Table of Contents
+1. [Prerequisites](#prerequisites)
+2. [Building the Project](#building-the-project)
+    - [Using CMake](#using-cmake)
+    - [Using Docker](#using-docker)
+3. [Testing the API's](#testing-the-apis)
+    - [Quick - Testing the API's](#quick---testing-the-apis)
+4. [Docker Commands](#docker-commands)
+5. [Boost Library](#boost-library)
+    - [Linking Directory](#linking-directory)
+6. [Using the Docker Image](#using-the-docker-image)
+    - [Create a Custom Local Docker Image](#create-a-custom-local-docker-image)
+    - [Export the Image](#export-the-image)
+    - [Transfer or Copy the Exported Image](#transfer-or-copy-the-exported-image)
+    - [Consume a Custom Local Docker Image](#consume-a-custom-local-docker-image)
+7. [Benchmarking](#benchmarking)
+
 ## Prerequisites
 - C++17 compatible compiler
 - CMake `3.28` or higher
@@ -23,7 +40,7 @@ Run the [setup.sh](./setup.sh) script.
         ```
 2. Run the Docker container:
     ```sh
-    docker run -p 8080:80 -d rest_api
+    docker run -p 8080:8080 -d rest_api
     ```
 
 ## Testing the API's
@@ -42,21 +59,22 @@ Expected response:
 
 ### Quick - Testing the API's
 ```bash
-docker build -t rest_api . && docker run -p 8080:80 -d rest_api;
-echo -n "\n\nGET http://localhost:8080:\n" && curl http://localhost:8080;
-echo -n "\n\nGET http://localhost:8080/status:\n" && curl http://localhost:8080/status;
-echo -n "\n\nGET http://localhost:8080/error:\n" && curl http://localhost:8080/error;
-echo -n "\n\nPOST http://localhost:8080:\n" && curl -X POST http://localhost:8080
+docker stop $(docker ps -qa); 
+docker build -t rest_api . && docker run -p 8080:8080 -d rest_api;
+echo -n "\n\nGET http://localhost:8080:\n" && curl -v http://localhost:8080;
+echo -n "\n\nGET http://localhost:8080/status:\n" && curl -v http://localhost:8080/status;
+echo -n "\n\nGET http://localhost:8080/error:\n" && curl -v http://localhost:8080/error;
+echo -n "\n\nPOST http://localhost:8080:\n" && curl -v -X POST http://localhost:8080;
 ```
 
 ## Docker commands
 * Running a container from an image in attached mode:
     ```sh
-    docker run -p 8080:80 <image_name>
+    docker run -p 8080:8080 <image_name>
     ```
 * Running a container from an image in detached mode:
     ```sh
-    docker run -p 8080:80 -d <image_name>
+    docker run -p 8080:8080 -d <image_name>
     ```
 * Attaching a terminal to a detached container:
     ```sh

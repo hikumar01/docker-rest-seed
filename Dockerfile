@@ -33,5 +33,5 @@ RUN rm -rf boost build boost_1_86_0.tar.gz src include CMakeLists.txt
 
 # Starting App
 # The port should be the same as the one in the code
-EXPOSE 80
+EXPOSE 8080
 CMD ["./rest_api"]
