@@ -11,14 +11,14 @@ RUN mkdir -p boost
 RUN tar -xzf boost_1_86_0.tar.gz -C boost
 WORKDIR ${APP_DIR}/boost/boost_1_86_0
 RUN ./bootstrap.sh
-RUN ./b2 link=static --with-system --with-json
-# RUN ./b2 link=static --with-system --with-json install --prefix=/usr/local
+# RUN ./b2 link=static --with-system --with-json
+RUN ./b2 link=static --with-system --with-json install --prefix=/usr/local
 # RUN ./b2 link=shared --with-system --with-json install --prefix=/usr/local
 
 # Setting up the project
 WORKDIR ${APP_DIR}
 COPY CMakeLists.txt .
-COPY src/ src/
+COPY main.cpp main.cpp
 
 # Compiling the project
 WORKDIR ${APP_DIR}/build
@@ -28,8 +28,8 @@ RUN cmake --build . --verbose
 
 # Clean up
 WORKDIR ${APP_DIR}
-RUN rm -rf boost build boost_1_86_0.tar.gz src CMakeLists.txt
+RUN rm -rf boost build boost_1_86_0.tar.gz
 
 # Running the server
-EXPOSE 80
-CMD ["./bin/server"]
+EXPOSE 8080
+CMD ["./boost_rest_api"]
