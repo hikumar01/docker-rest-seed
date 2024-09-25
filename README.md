@@ -32,15 +32,15 @@ Run the [setup.sh](./setup.sh) script.
 1. Build the Docker image:
     - With Cache:
         ```sh
-        docker build -t boost_rest_api .
+        docker build -t rest_api .
         ```
     - Without Cache:
         ```sh
-        docker build --no-cache -t boost_rest_api .
+        docker build --no-cache -t rest_api .
         ```
 2. Run the Docker container:
     ```sh
-    docker run -p 8080:8080 -d boost_rest_api
+    docker run -p 8080:8080 rest_api
     ```
 
 ## Testing the API's
@@ -119,21 +119,21 @@ Boost version [1.86.0](https://archives.boost.io/release/1.86.0/source/boost_1_8
 ### Create a custom local docker image
 To build or identify the Docker image, use the following command:
 ```bash
-docker build -t cpp_boost_rest_api:latest .
+docker build -t rest_api:latest .
 ```
-### Export the image
+### Export the Image
 To export the image, use the following command:
 ```bash
-docker save -o cpp_boost_rest_api.tar cpp_boost_rest_api:latest
+docker save -o rest_api.tar rest_api:latest
 ```
 
 ### Transfer or Copy the Exported image
-After creating the tar file (cpp_boost_rest_api.tar), you can transfer it to another machine via USB drive or network transfer (like scp, rsync)
+After creating the tar file (rest_api.tar), you can transfer it to another machine via USB drive or network transfer (like scp, rsync)
 
 ### Consume a custom local docker image
 To import the Docker image on another machine, use the following command:
 ```bash
-docker load -i cpp_boost_rest_api.tar
+docker load -i rest_api.tar
 ```
 To verify that the image is loaded, use the following command:
 ```bash
