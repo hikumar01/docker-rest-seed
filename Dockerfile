@@ -9,6 +9,7 @@ WORKDIR ${APP_DIR}
 RUN wget -c --progress=bar:force https://archives.boost.io/release/1.86.0/source/boost_1_86_0.tar.gz \
     && mkdir -p boost \
     && tar -xzf boost_1_86_0.tar.gz -C boost
+RUN apk del wget
 WORKDIR ${APP_DIR}/boost/boost_1_86_0
 RUN ./bootstrap.sh
 # RUN ./b2 link=static --with-system --with-json

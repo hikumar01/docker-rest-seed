@@ -2,8 +2,7 @@
 set -o verbose # echo on
 
 killall rest_api
-rm -rf build rest_api
-mkdir boost build
+mkdir boost
 
 if [ ! -d boost/boost_1_86_0 ]; then
     if [ ! -f boost_1_86_0.tar.gz ]; then

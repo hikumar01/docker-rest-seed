@@ -59,7 +59,7 @@ Expected response:
 
 ### Quick - Testing the API's
 ```bash
-docker stop $(docker ps -qa); 
+docker stop $(docker ps -qa);
 docker build -t rest_api . && docker run -p 8080:8080 -d rest_api;
 echo -n "\n\nGET http://localhost:8080:\n" && curl -v http://localhost:8080;
 echo -n "\n\nGET http://localhost:8080/status:\n" && curl -v http://localhost:8080/status;
