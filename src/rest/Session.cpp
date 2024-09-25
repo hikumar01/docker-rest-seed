@@ -1,44 +1,7 @@
 #include "rest/Session.h"
+#include "rest/RestController.h"
 #include <boost/json.hpp>
 #include <iostream>
-
-void handle_request(const boost::beast::http::request<boost::beast::http::string_body>& req, boost::beast::http::response<boost::beast::http::string_body>& res) {
-    // Get the target path (e.g., "/status")
-    std::string target(req.target());
-
-    if (req.method() == boost::beast::http::verb::get) {
-        if (target == "/") { // Handle root path
-            boost::json::value response_body = {
-                {"message", "Welcome to the REST API"},
-                {"status", "success"}
-            };
-
-            std::string json_string = boost::json::serialize(response_body);
-
-            res.result(boost::beast::http::status::ok);
-            res.set(boost::beast::http::field::content_type, "application/json");
-            res.body() = json_string;
-        } else if (target == "/status") { // Handle /status route
-            boost::json::value response_body = {
-                {"status", "API is running smoothly"}
-            };
-
-            std::string json_string = boost::json::serialize(response_body);
-
-            res.result(boost::beast::http::status::ok);
-            res.set(boost::beast::http::field::content_type, "application/json");
-            res.body() = json_string;
-        } else { // Handle unknown route (404 Not Found)
-            res.result(boost::beast::http::status::not_found);
-            res.body() = "Route not found";
-        }
-    } else { // Handle unsupported HTTP method
-        res.result(boost::beast::http::status::bad_request);
-        res.body() = "Unsupported HTTP method";
-    }
-
-    res.prepare_payload();
-}
 
 void Session::run() {
     read_request();
@@ -57,7 +20,7 @@ void Session::read_request() {
 }
 
 void Session::process_request() {
-    handle_request(req_, res_);
+    RestController::getInstance()->handle_request(req_, res_);
     write_response();
 }
 

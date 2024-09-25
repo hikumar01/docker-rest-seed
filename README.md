@@ -1,4 +1,4 @@
-# Boost Rest API
+# Rest API
 This project is a simple HTTP program built using Boost.Beast and Boost.Asio libraries. It demonstrates handling HTTP requests and responses in a modern C++ environment.
 
 ## Table of Contents
@@ -60,7 +60,7 @@ Expected response:
 ### Quick - Testing the API's
 ```bash
 docker stop $(docker ps -qa); 
-docker build -t boost_rest_api . && docker run -p 8080:8080 -d boost_rest_api;
+docker build -t rest_api . && docker run -p 8080:8080 -d rest_api;
 echo -n "\n\nGET http://localhost:8080:\n" && curl -v http://localhost:8080;
 echo -n "\n\nGET http://localhost:8080/status:\n" && curl -v http://localhost:8080/status;
 echo -n "\n\nGET http://localhost:8080/error:\n" && curl -v http://localhost:8080/error;
