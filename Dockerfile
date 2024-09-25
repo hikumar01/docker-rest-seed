@@ -23,14 +23,14 @@ COPY include/ include/
 COPY src/ src/
 
 # Compiling the project
-WORKDIR ${APP_DIR}/build
+WORKDIR ${APP_DIR}/cmake_cache
 # RUN cmake -DBOOST_ROOT=../boost/boost_1_86_0/stage -DCMAKE_BUILD_TYPE=Release ..
 RUN cmake -DCMAKE_BUILD_TYPE=Release ..
 RUN cmake --build . --verbose
 
 # Clean up
 WORKDIR ${APP_DIR}
-RUN rm -rf boost build boost_1_86_0.tar.gz CMakeLists.txt include src
+RUN rm -rf boost cmake_cache boost_1_86_0.tar.gz CMakeLists.txt include src
 
 # Running the server
 # The port should be the same as the one in the code
