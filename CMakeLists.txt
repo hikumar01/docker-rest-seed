@@ -13,6 +13,7 @@ add_executable(rest_api)
 target_sources(rest_api PRIVATE
     src/rest/Server.cpp
     src/rest/Session.cpp
+    src/rest/Http.cpp
     src/rest/RestController.cpp
     src/main.cpp)
 

@@ -18,6 +18,7 @@ if [ ! -d boost/boost_1_86_0 ]; then
 fi
 
 cd build
+# cmake -DBOOST_ROOT=../boost/boost_1_86_0/stage -G Xcode ..
 cmake -DBOOST_ROOT=../boost/boost_1_86_0/stage -DCMAKE_BUILD_TYPE=Debug ..
 cmake --build . --verbose
 
