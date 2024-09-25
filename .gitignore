@@ -1,4 +1,4 @@
 boost_1_86_0.tar.gz
 boost
-build
+cmake_cache
 rest_api
