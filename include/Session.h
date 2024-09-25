@@ -1,16 +1,11 @@
 #pragma once
 
 #include <boost/asio.hpp>
-#include <boost/beast/core.hpp>
-#include <boost/beast/http.hpp>
-
-namespace beast = boost::beast;
-namespace http = beast::http;
-using tcp = boost::asio::ip::tcp;
+#include <boost/beast.hpp>
 
 class Session : public std::enable_shared_from_this<Session> {
 public:
-    Session(tcp::socket socket);
+    Session(boost::asio::ip::tcp::socket socket) : socket_(std::move(socket)) {}
     void run();
 
 private:
@@ -18,8 +13,8 @@ private:
     void process_request();
     void write_response();
 
-    tcp::socket socket_;
-    beast::flat_buffer buffer_;
-    http::request<http::string_body> req_;
-    http::response<http::string_body> res_;
+    boost::asio::ip::tcp::socket socket_;
+    boost::beast::flat_buffer buffer_;
+    boost::beast::http::request<boost::beast::http::string_body> req_;
+    boost::beast::http::response<boost::beast::http::string_body> res_;
 };

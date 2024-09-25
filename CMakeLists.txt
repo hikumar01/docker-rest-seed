@@ -11,12 +11,14 @@ find_package(Boost 1.86 CONFIG REQUIRED COMPONENTS system json)
 add_executable(rest_api)
 
 target_sources(rest_api PRIVATE
-    src/RestController.cpp
+    src/rest/Server.cpp
+    src/rest/Session.cpp
+    src/rest/RestController.cpp
     src/main.cpp)
 
 target_include_directories(rest_api PRIVATE
-    include
-    ${Boost_INCLUDE_DIRS})
+    ${Boost_INCLUDE_DIRS}
+    ${CMAKE_SOURCE_DIR}/include)
 
 target_link_libraries(rest_api PRIVATE
     ${Boost_LIBRARIES})
