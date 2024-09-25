@@ -6,9 +6,9 @@ RUN apk add --no-cache g++ make cmake wget linux-headers
 
 # Compiling boost
 WORKDIR ${APP_DIR}
-RUN wget -c --progress=bar:force https://archives.boost.io/release/1.86.0/source/boost_1_86_0.tar.gz
-RUN mkdir -p boost
-RUN tar -xzf boost_1_86_0.tar.gz -C boost
+RUN wget -c --progress=bar:force https://archives.boost.io/release/1.86.0/source/boost_1_86_0.tar.gz \
+    && mkdir -p boost \
+    && tar -xzf boost_1_86_0.tar.gz -C boost
 WORKDIR ${APP_DIR}/boost/boost_1_86_0
 RUN ./bootstrap.sh
 RUN ./b2 link=static --with-system --with-json
@@ -32,5 +32,6 @@ WORKDIR ${APP_DIR}
 RUN rm -rf boost build boost_1_86_0.tar.gz CMakeLists.txt include src
 
 # Running the server
+# The port should be the same as the one in the code
 EXPOSE 8080
 CMD ["./rest_api"]

@@ -40,7 +40,7 @@ Run the [setup.sh](./setup.sh) script.
         ```
 2. Run the Docker container:
     ```sh
-    docker run -p 8080:8080 rest_api
+    docker run -p 8080:8080 -d rest_api
     ```
 
 ## Testing the API's
