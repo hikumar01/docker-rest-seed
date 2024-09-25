@@ -1,8 +1,8 @@
 #!/bin/bash
-set -o verbose #echo on
+set -o verbose # echo on
 
-killall boost_rest_api
-rm -rf build boost_rest_api
+killall rest_api
+rm -rf build rest_api
 mkdir boost build
 
 if [ ! -d boost/boost_1_86_0 ]; then
@@ -22,6 +22,6 @@ cmake -DBOOST_ROOT=../boost/boost_1_86_0/stage -DCMAKE_BUILD_TYPE=Debug ..
 cmake --build . --verbose
 
 cd ..
-./boost_rest_api&
+./rest_api&
 
-set +o verbose #echo off
+set +o verbose # echo off
