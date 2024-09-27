@@ -1,6 +1,6 @@
 #pragma once
 
-#include <boost/asio.hpp>
+#include <boost/asio/ip/tcp.hpp>
 #include <boost/beast.hpp>
 
 class Session : public std::enable_shared_from_this<Session> {

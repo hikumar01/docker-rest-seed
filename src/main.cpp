@@ -1,4 +1,4 @@
-#include "rest/RestController.h"
+#include "RestController.h"
 #include <iostream>
 
 int main(int argc, char* argv[]) {
@@ -7,16 +7,19 @@ int main(int argc, char* argv[]) {
     std::cout << "Server running on http://localhost:" << port << std::endl;
     auto rest_controller = RestController::getInstance();
 
-    rest_controller->add_routes(Method::GET, "/", [](const HttpRequest& req, HttpResponse& res) {
-        res.status_code = 200;
-        res.headers["Content-Type"] = "application/json";
-        res.body = "{\"message\":\"Welcome to the REST API\",\"status\":\"success\"}";
+    rest_controller->add_routes(Method::get, "/api/hello", [](const BoostRequest& req, BoostResponse& res) {
+        res.result(boost::beast::http::status::ok);
+        res.set("Content-Type", "application/json");
+        // std::string body = "{\"message\":\"Welcome to the REST API\",\"status\":\"success\"}";
+        std::string body = R"({"message": "Welcome to the REST API", "status": "success"})";
+        return body;
     });
 
-    rest_controller->add_routes(Method::GET, "/status", [](const HttpRequest& req, HttpResponse& res) {
-        res.status_code = 200;
-        res.headers["Content-Type"] = "text/plain";
-        res.body = "API is running smoothly";
+    rest_controller->add_routes(Method::get, "/status", [](const BoostRequest& req, BoostResponse& res) {
+        res.result(boost::beast::http::status::ok);
+        res.set("Content-Type", "text/plain");
+        std::string body = "API is running smoothly";
+        return body;
     });
 
     try {

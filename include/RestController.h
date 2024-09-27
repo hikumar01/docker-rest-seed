@@ -1,8 +1,13 @@
 #pragma once
 
-#include <rest/Http.h>
+#include <boost/beast/http.hpp>
 #include <mutex>
 #include <unordered_map>
+
+using BoostRequest = boost::beast::http::request<boost::beast::http::string_body>;
+using BoostResponse = boost::beast::http::response<boost::beast::http::string_body>;
+using HttpHandler = std::function<std::string(const BoostRequest&, BoostResponse&)>;
+using Method = boost::beast::http::verb;
 
 class RestController {
 private:

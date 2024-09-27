@@ -1,5 +1,5 @@
-#include "rest/Session.h"
-#include "rest/RestController.h"
+#include "Session.h"
+#include "RestController.h"
 #include <boost/json.hpp>
 #include <iostream>
 
