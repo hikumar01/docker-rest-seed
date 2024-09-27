@@ -66,7 +66,7 @@ Expected response:
 ```bash
 docker stop $(docker ps -qa);
 docker build -t rest_api . && docker run -p 8080:8080 -d rest_api;
-echo -n "\n\nGET http://localhost:8080:\n" && curl http://localhost:8080;
+echo -n "\n\nGET http://localhost:8080:/api/hello\n" && curl http://localhost:8080/api/hello;
 echo -n "\n\nGET http://localhost:8080/status:\n" && curl http://localhost:8080/status;
 echo -n "\n\nGET http://localhost:8080/error:\n" && curl http://localhost:8080/error;
 echo -n "\n\nPOST http://localhost:8080:\n" && curl -X POST http://localhost:8080;
