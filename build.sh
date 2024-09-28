@@ -17,11 +17,11 @@ if [ ! -d boost/boost_1_86_0 ]; then
 fi
 
 cd cmake_cache
-# cmake -DBOOST_ROOT=../boost/boost_1_86_0/stage -G Xcode ..
 cmake -DBOOST_ROOT=../boost/boost_1_86_0/stage -DCMAKE_BUILD_TYPE=Debug ..
 cmake --build . --verbose
+# rm -rf cmake_cache/*; cd cmake_cache && cmake -DBOOST_ROOT=../boost/boost_1_86_0/stage -G Xcode .. && cd ..
 
 cd ..
-./rest_api&
+./rest_api
 
 set +o verbose # echo off

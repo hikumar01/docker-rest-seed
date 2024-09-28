@@ -6,7 +6,7 @@
 
 using BoostRequest = boost::beast::http::request<boost::beast::http::string_body>;
 using BoostResponse = boost::beast::http::response<boost::beast::http::string_body>;
-using HttpHandler = std::function<std::string(const BoostRequest&, BoostResponse&)>;
+using HttpHandler = std::function<void(const BoostRequest&, BoostResponse&)>;
 using Method = boost::beast::http::verb;
 
 class RestController {
@@ -29,4 +29,8 @@ public:
     void add_routes(const Method& method, const std::string& target, const HttpHandler& handler);
 
     void handle_request(const BoostRequest& req, BoostResponse& res);
+
+    std::string read_file(const std::string& path);
+
+    std::string get_mime_type(const std::string& path);
 };
