@@ -4,22 +4,19 @@
 int main(int argc, char* argv[]) {
     const int port = 8080; // This port should match with the port in the Dockerfile
     const int num_threads = 1;
-    std::cout << "Server running on http://localhost:" << port << std::endl;
+    std::cout << "Server running on http://localhost:" << port << "." << std::endl;
     auto rest_controller = RestController::getInstance();
 
     rest_controller->add_routes(Method::get, "/api/hello", [](const BoostRequest& req, BoostResponse& res) {
         res.result(boost::beast::http::status::ok);
-        res.set("Content-Type", "application/json");
-        // std::string body = "{\"message\":\"Welcome to the REST API\",\"status\":\"success\"}";
-        std::string body = R"({"message": "Welcome to the REST API", "status": "success"})";
-        return body;
+        res.set(boost::beast::http::field::content_type, "application/json");
+        res.body() = R"({"message": "Welcome to the REST API", "status": "success"})";
     });
 
     rest_controller->add_routes(Method::get, "/status", [](const BoostRequest& req, BoostResponse& res) {
         res.result(boost::beast::http::status::ok);
-        res.set("Content-Type", "text/plain");
-        std::string body = "API is running smoothly";
-        return body;
+        res.set(boost::beast::http::field::content_type, "text/plain");
+        res.body() = "API is running smoothly";
     });
 
     try {

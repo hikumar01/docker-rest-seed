@@ -65,11 +65,11 @@ Expected response:
 ### Quick - Testing the API's
 ```bash
 docker stop $(docker ps -qa);
-docker build -t rest_api . && docker run -p 8080:8080 -d rest_api;
-echo -n "\n\nGET http://localhost:8080:/api/hello\n" && curl http://localhost:8080/api/hello;
-echo -n "\n\nGET http://localhost:8080/status:\n" && curl http://localhost:8080/status;
-echo -n "\n\nGET http://localhost:8080/error:\n" && curl http://localhost:8080/error;
-echo -n "\n\nPOST http://localhost:8080:\n" && curl -X POST http://localhost:8080;
+docker build -t rest_api . && docker run -p 8080:8080 rest_api;
+echo -n "\n\nGET http://localhost:8080:/api/hello\n" && curl -v http://localhost:8080/api/hello;
+echo -n "\n\nGET http://localhost:8080/status:\n" && curl -v http://localhost:8080/status;
+echo -n "\n\nGET http://localhost:8080/error:\n" && curl -v http://localhost:8080/error;
+echo -n "\n\nPOST http://localhost:8080:\n" && curl -v -X POST http://localhost:8080;
 ```
 
 ## Docker commands

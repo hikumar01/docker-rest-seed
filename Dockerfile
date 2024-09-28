@@ -21,6 +21,7 @@ WORKDIR ${APP_DIR}
 COPY CMakeLists.txt .
 COPY include/ include/
 COPY src/ src/
+COPY ui/ ui/
 
 # Compiling the project
 WORKDIR ${APP_DIR}/cmake_cache
