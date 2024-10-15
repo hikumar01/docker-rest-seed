@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>String Compare</title>
+    <link rel="preload" href="compare/styles.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="compare/styles.css"></noscript>
+    <script defer src="compare/scripts.js"></script>
+</head>
+<body>
+    <div class="button-container">
+        <button id="compareBtn" onclick="compareStrings(event)">Compare</button>
+    </div>
+    <div class="container">
+        <div contenteditable="true" class="half" id="left-half" onclick="clearContent('left-half')">Enter first text here</div>
+        <div contenteditable="true" class="half" id="right-half" onclick="clearContent('right-half')">Enter second text here</div>
+    </div>
+</body>
+</html>

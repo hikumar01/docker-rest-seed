@@ -2,6 +2,7 @@
 
 #include <boost/beast/http.hpp>
 #include <mutex>
+#include <string>
 #include <unordered_map>
 
 using BoostRequest = boost::beast::http::request<boost::beast::http::string_body>;
@@ -11,15 +12,17 @@ using Method = boost::beast::http::verb;
 
 class RestController {
 private:
+    static std::string defaultTarget;
     static std::shared_ptr<RestController> instance;
     static std::mutex mtx;
     std::unordered_map<Method, std::unordered_map<std::string, HttpHandler>> routes;
 
 public:
-    static std::shared_ptr<RestController> getInstance() {
+    static std::shared_ptr<RestController> getInstance(std::string target = "") {
         std::lock_guard<std::mutex> lock(mtx);
         if (instance == nullptr) {
             instance = std::make_shared<RestController>();
+            instance->defaultTarget = target;
         }
         return instance;
     }

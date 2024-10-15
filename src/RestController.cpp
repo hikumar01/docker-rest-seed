@@ -5,10 +5,10 @@
 #include <boost/json.hpp>
 #include <fstream>
 #include <iostream>
-#include <string>
 
 std::shared_ptr<RestController> RestController::instance = nullptr;
 std::mutex RestController::mtx;
+std::string RestController::defaultTarget = "/index.html";
 
 void RestController::start_server(const int& port, const int& num_threads) {
     try {
@@ -52,15 +52,14 @@ void RestController::handle_request(const BoostRequest& req, BoostResponse& res)
     std::cout << "Request: " << req.method() << " " << req.target() << std::endl;
 
     if (req_method == Method::get && target.compare("/") == 0)
-        target = "/index.html";
+        target = defaultTarget;
     const std::string mime_type = get_mime_type(target);
     const static std::string ui_prefix = "./ui";
 
     if (mime_type.compare("application/octet-stream") != 0) {
         std::string content = read_file(ui_prefix + target);
         if (content.empty()) {
-            res.result(boost::beast::http::status::moved_permanently);
-            res.set(boost::beast::http::field::location, "/index.html");
+            res.result(boost::beast::http::status::not_found);
         } else {
             res.result(boost::beast::http::status::ok);
             res.set(boost::beast::http::field::content_type, mime_type);
