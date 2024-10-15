@@ -1,0 +1,70 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0 5px 0;
+}
+
+#compareBtn {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+#compareBtn:hover {
+    background-color: #45a049;
+}
+
+body, html {
+    height: 100%;
+    width: 100%;
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    height: 95%;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 20px 20px 20px;
+}
+
+.half {
+    flex: 1; /* Allows both halves to take equal space */
+    border: 2px solid #000;
+    display: flex;
+    flex-direction: row; /* Aligns children in a column */
+    padding: 20px;
+    margin: 10px;
+    background-color: #E5E4E2;
+    width: calc(50% - 20px); /* Fixed width with margin */
+    overflow-wrap: break-word; /* Ensures long words break */
+    word-wrap: break-word; /* Legacy support */
+    white-space: pre-wrap; /* Preserves whitespace and wraps */
+    min-height: 100px; /* Optional: set a minimum height for better UX */
+}
+
+.half h1 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.red-text {
+    color: red;
+    display: inline;
+}
+
+.green-text {
+    color: green;
+    display: inline;
+}

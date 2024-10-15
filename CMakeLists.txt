@@ -17,6 +17,7 @@ set(SOURCE_FILES
     src/Server.cpp
     src/Session.cpp
     src/RestController.cpp
+    src/compare/Levenshtein.cpp
     src/main.cpp)
 
 # Add sources to the target
