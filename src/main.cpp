@@ -1,4 +1,3 @@
-#include "compare/Levenshtein.h"
 #include "compare/LongestCommonSubsequence.h"
 #include "RestController.h"
 #include <boost/json.hpp>
@@ -47,9 +46,6 @@ int main(int argc, char* argv[]) {
 
             std::string str1 = json_obj["str1"].as_string().c_str();
             std::string str2 = json_obj["str2"].as_string().c_str();
-
-            // std::unique_ptr<Levenshtein> levenshtein = std::make_unique<Levenshtein>();
-            // std::vector<Diff> diffs = levenshtein->levenshtein_distance(str1, str2);
 
             std::unique_ptr<LongestCommonSubsequence> lcs = std::make_unique<LongestCommonSubsequence>();
             std::vector<Diff> diffs = lcs->stringDiff(str1, str2);

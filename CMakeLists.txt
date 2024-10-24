@@ -19,7 +19,6 @@ set(SOURCE_FILES
     src/Session.cpp
     src/RestController.cpp
     src/compare/Diff.cpp
-    src/compare/Levenshtein.cpp
     src/compare/LongestCommonSubsequence.cpp
     src/main.cpp)
 
