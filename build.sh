@@ -2,6 +2,7 @@
 set -o verbose # echo on
 
 killall rest_api
+rm rest_api
 mkdir boost cmake_cache
 
 if [ ! -d boost/boost_1_86_0 ]; then

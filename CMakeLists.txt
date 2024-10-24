@@ -4,6 +4,7 @@ project(rest_api VERSION 1.0)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror")
 
 # Find Boost Libraries
 set(Boost_USE_STATIC_LIBS ON)
@@ -17,7 +18,9 @@ set(SOURCE_FILES
     src/Server.cpp
     src/Session.cpp
     src/RestController.cpp
+    src/compare/Diff.cpp
     src/compare/Levenshtein.cpp
+    src/compare/LongestCommonSubsequence.cpp
     src/main.cpp)
 
 # Add sources to the target

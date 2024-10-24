@@ -12,9 +12,10 @@
     <div class="button-container">
         <button id="compareBtn" onclick="compareStrings(event)">Compare</button>
     </div>
-    <div class="container">
-        <div contenteditable="true" class="half" id="left-half" onclick="clearContent('left-half')">Enter first text here</div>
-        <div contenteditable="true" class="half" id="right-half" onclick="clearContent('right-half')">Enter second text here</div>
+    <div class="container" id="container">
+        <div contenteditable="true" class="half" id="left-half">Enter first text here</div>
+        <div contenteditable="true" class="half" id="right-half">Enter second text here</div>
     </div>
+    <div class="result" id="result" />
 </body>
 </html>
