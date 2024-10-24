@@ -1,48 +1,29 @@
-function clearContent(elementId) {
-    document.getElementById(elementId).innerHTML = '';
-}
-
-function toggleInputElements(enabled) {
-    document.getElementById('left-half').enabled = enabled;
-    document.getElementById('right-half').enabled = enabled;
-    document.getElementById('compareBtn').enabled = enabled;
-}
-
-function updateColourofStrings(str1, str2, result) {
-    let updatedStr1 = "", updatedStr2 = "";
-    let compareStr1 = "", compareStr2 = "";
+function updateColourofStrings(result) {
+    let updatedStr = "";
     for (let i = 0; i < result.length; i++) {
         const {operation, str} = result[i];
-        const encodedStr = str.replace(/\\/g, '\\\\'); // Escape backslash
+        // const encodedStr = str.replace(/\\/g, '\\\\'); // Escape backslash
+        const encodedStr = str.replace(/\\/g, '\\\\').replace(/\n/g, '<br/>'); // Escape backslash & new line
+        console.log("str: ", str, ", encodedStr: ", encodedStr);
+        let className = "black-text";
         if (operation === "INSERT") {
-            compareStr2 += encodedStr;
-            updatedStr2 += '<span class="green-text">' + encodedStr + '</span>';
+            className = "green-text";
         } else if (operation === "DELETE") {
-            compareStr1 += encodedStr;
-            updatedStr1 += '<span class="red-text">' + encodedStr + '</span>';
-        } else { // operation === "EQUAL"
-            compareStr1 += encodedStr;
-            compareStr2 += encodedStr;
-            updatedStr1 += encodedStr;
-            updatedStr2 += encodedStr;
+            className = "red-text";
         }
+        updatedStr += '<span class="' + className + '">' + encodedStr + '</span>&nbsp;';
     }
-    if (compareStr1 !== str1) {
-        console.log("Error: str1: ", str1, ", compareStr1: ", compareStr1);
-    }
-    if (compareStr2 !== str2) {
-        console.log("Error: str2: ", str2, ", compareStr2: ", compareStr2);
-    }
-    return { updatedStr1, updatedStr2 };
+    return updatedStr;
 }
 
 async function compareStrings(event) {
     event.preventDefault();
 
-    toggleInputElements(false);
     const str1 = document.getElementById('left-half').textContent;
     const str2 = document.getElementById('right-half').textContent;
-    const body_object = { str1: str1, str2: str2 };
+    const encodedStr1 = str1.replace(/\\/g, '\\\\').replace(/\n/g, '<br/>'); // Escape backslash & new line
+    const encodedStr2 = str2.replace(/\\/g, '\\\\').replace(/\n/g, '<br/>'); // Escape backslash & new line
+    const body_object = { str1: encodedStr1, str2: encodedStr2 };
     console.log("body_object: ", body_object);
 
     try {
@@ -56,17 +37,16 @@ async function compareStrings(event) {
 
         if (response.ok) {
             const result = await response.json();
-            const string_difference = result.result;
+            const updatedStr = updateColourofStrings(result.result);
+            console.log("updatedStr: ", updatedStr);
+            document.getElementById('result').innerHTML = updatedStr;
 
-            const { updatedStr1, updatedStr2 } = updateColourofStrings(str1, str2, string_difference);
-            document.getElementById('left-half').innerHTML = updatedStr1;
-            document.getElementById('right-half').innerHTML = updatedStr2;
+            document.getElementById('container').height = '40%';
+            document.getElementById('result').height = '55%';
         } else {
             alert('Server error, please try again later.');
         }
     } catch (error) {
         console.error('Error:', error);
-    } finally {
-        toggleInputElements(true);
     }
 }
